@@ -43,8 +43,10 @@ import java.io.IOException;
  * the same, but here we can handle the aspect ratio adjustment with a simple matrix,
  * rather than a custom layout.
  * <p>
- * TODO: investigate crash when screen is rotated while movie is playing (need
- *       to have onPause() wait for playback to stop)
+ *
+ * 从存储卡中读取视频文件并播放，输出到TextureView上（只有视频，没有音频）
+ * {@link PlayMovieSurfaceActivity} 用的是SurfaceView
+ * 这里可以通过一个简单的matrix操作长宽比，而不是使用一个自定义的布局
  */
 public class PlayMovieActivity extends Activity implements OnItemSelectedListener,
         TextureView.SurfaceTextureListener, MoviePlayer.PlayerFeedback {

@@ -26,6 +26,8 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import com.jiangkang.MediaCodecUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -132,6 +134,9 @@ public class MainActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MediaCodecUtils.printCodecInfo();
+        MediaCodecUtils.createMediaCodec(this);
 
         // One-time singleton initialization; requires activity context to get file location.
         ContentManager.initialize(this);

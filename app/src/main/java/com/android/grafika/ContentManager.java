@@ -35,6 +35,7 @@ import java.util.ArrayList;
  * create it all up front on first launch. ]
  * <p>
  * Class is thread-safe.
+ * 管理生成的测试视频
  */
 public class ContentManager {
     private static final String TAG = MainActivity.TAG;
@@ -145,6 +146,7 @@ public class ContentManager {
      * Prepares the specified item.
      * <p>
      * This may be called from the async task thread.
+     * 根据标签类型，生成两种视频
      */
     private void prepare(ProgressUpdater prog, int tag) {
         GeneratedMovie movie;
@@ -228,6 +230,7 @@ public class ContentManager {
             ContentManager contentManager = ContentManager.getInstance();
 
             Log.d(TAG, "doInBackground...");
+            // 其实就循环2次
             for (int i = 0; i < mTags.length; i++) {
                 mCurrentIndex = i;
                 updateProgress(0);

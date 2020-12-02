@@ -7,6 +7,11 @@ Android图形架构Demo，包含一些Surface，SurfaceView，TextureView,EGL的
 ## 基于google/grafika的改动
 - 切换到androidx（google的源码已经过时，新版本的Android Studio已经不支持）
 
+## 主要内容
+
+### 自动生成测试视频
+
+
 Current features
 ----------------
 

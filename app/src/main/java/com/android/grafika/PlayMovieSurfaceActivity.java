@@ -37,10 +37,28 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Play a movie from a file on disk.  Output goes to a SurfaceView.
+ * 播放存储卡上的视频，输出到SurfaceView上.
  * <p>
- * This is very similar to PlayMovieActivity, but the output goes to a SurfaceView instead of
- * a TextureView.  There are some important differences:
+ * 与输出到TextureView中，主要有以下不同点：
+ *
+ * 1. TextureView更像一个普通的View，但SurfaceView不是。
+ *    SurfaceView在UI中有一个透明的"洞"，通过这个"洞",一个独立的Surface Layer可以被看到
+ *    这个Surface直接被发送到系统的图形Compositor。
+ * 2.因为系统Compositor（不是应用）将视频与UI组合在一起，通常性能更高（比如使用硬件Composer overlay）
+ *   当播放长视频的时候省电效果很明显。
+ *
+ * 3. TextureView的内从可以通过一个简单的matrix随意缩放和旋转。
+ *    但是SurfaceView则被限制了缩放
+ *
+ * 4. 受DRM保护的内容不能被app（甚至是系统compositor）接触到，我们必须将MediaCodec decoder指向被一个硬件Compositor overlay合成的Surface
+ *    这时候对于app来说，唯一的选择就是SurfaceView了
+ *
+ *
+ * MediaCodec decoder 从Suface中请求 buffers，并传递视频尺寸作为参数，Surface提供对应尺寸的 buffers，这意味着视频数据会完全覆盖Surface。
+ * 这样的话，就没有必要使用{@link SurfaceHolder#setFixedSize(int, int)}去设置尺寸了。
+ * 硬件scaler将会缩放视频到对应的view尺寸，因此如果我们想要保持正确的宽高比，我们需要调整View布局（可以使用自定义的AspectFrameLayout）
+ *
+ * 视频实际播放的过程，即发送视频帧到Suface，这个过程对于TextureView和SurfaceView是一样的。
  * <ul>
  *   <li> TextureViews behave like normal views.  SurfaceViews don't.  A SurfaceView has
  *        a transparent "hole" in the UI through which an independent Surface layer can
